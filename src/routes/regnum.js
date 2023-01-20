@@ -4,7 +4,7 @@ import { Router } from 'express';
 // const auth = require('../utils/isAuthenticated');
 
 
-const teacher = require('../controllers/teacher.controller.js');
+const regnum = require('../controllers/regnum.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -103,14 +103,7 @@ const router = Router();
  * 
  */
 
-router.get('/', teacher.getAllTeachers)
+router.post('/', regnum.createRegnum)
 
-router.get('/:id', teacher.getTeacher);
-
-router.post('/createTeacher', teacher.createTeacher);
-
-// router.post('/delete', user.deleteUser);
-
-// router.post('/update/:id', user.updateUser);
 
 export default router;

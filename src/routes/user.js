@@ -9,128 +9,116 @@ const router = Router();
  * @swagger
  * components:
  *   schemas:
- *     student:
+ *     user:
  *       type: object
  *       required:
  *         - firstname
  *         - lastname
  *         - gender
- *         - classname
- *         -  classtype
- *         -  teacher_firstname
- *         -  teacher_lastname
+ *         - email
  *       properties:
  *         firstname:
  *           type: string
- *           description: The first name of the student
+ *           description: The first name of the user
  *         lastname:
  *           type: string
- *           description: The last name of the student
+ *           description: The last name of the user
  *         gender:
  *           type: string
- *           description: The gender of the student
- *         classname:
+ *           description: The gender of the user
+ *         email:
  *           type: string
- *           description: the name of the student's class
- *         classtype:
- *           type: string
- *           description: The student's class type
- *         teacher_firstname:
- *           type: string
- *           description: The first name of the teacher of the student
- *         teacher_lastname:
- *           type: string
- *           description: The last name of the teacher of the student
- * 
- *     studentPost:
+ *           description: the email of the user
+ *   
+ *     userPost:
  *       type: object
  *       required:
  *         - firstname
  *         - lastname
  *         - gender
- *         - classname
- *         -  classtype
- *         -  teacherId
+ *         - email
+ *         -  password
+ *         -  regnum
  *       properties:
  *         firstname:
  *           type: string
- *           description: The first name of the student
+ *           description: The first name of the user
  *         lastname:
  *           type: string
- *           description: The last name of the student
+ *           description: The last name of the user
  *         gender:
  *           type: string
- *           description: The gender of the student
- *         classname:
+ *           description: The gender of the user
+ *         email:
  *           type: string
- *           description: the name of the student's class
- *         classtype:
+ *           description: the email of the user
+ *         password:
  *           type: string
- *           description: The student's class type
- *         teacherId:
+ *           description: The user's password
+ *         regnum:
  *           type: integer
- *           description: The Id of the teacher of the student
+ *           description: The registration number of the user
  *         
  */
 /**
  * @swagger
  * /user:
  *   get:
- *     summary: gets all students
+ *     summary: gets all users
  *     tags:
- *       - student
+ *       - user
  *     responses:
  *        200:
- *          description: the list of students
+ *          description: the list of users
  *          content:
  *             application/json:
  *              schema:
  *                  type: array
  *                  items:
- *                   $ref: '#/components/schemas/student'
+ *                   $ref: '#/components/schemas/user'
  * 
- * /user/{studentId}:
+ * /user/{userId}:
  *   get:
  *     parameters:
  *      - in: path
- *        name: studentId
- *     summary: gets single student
+ *        name: userId
+ *     summary: gets single user
  *     tags:
- *       - student
+ *       - user
  *     responses:
  *        200:
- *          description: single entry of students
+ *          description: single entry of users
  *          content:
  *             application/json:
  *              schema:
  *                  type: array
  *                  items:
- *                   $ref: '#/components/schemas/student'
+ *                   $ref: '#/components/schemas/user'
  * 
  * /user/createUser:
  *   post:
- *     summary: Create a new student entry
+ *     summary: Create a new user entry
  *     tags:
- *       - student
+ *       - user
  *     requestBody:
  *       required:
  *         - firstname
  *         - lastname
  *         - gender
- *         - classname
- *         - classtype
- *         - teacherId
+ *         - email
+ *         - password
+ *         - regnum
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/studentPost'
+ *             $ref: '#/components/schemas/userPost'
  *     responses:
  *       200:
- *         description: The created student entry
+ *         description: The created user entry
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/studentPost'
+ *               $ref: '#/components/schemas/userPost'
  *       500:
  *         description: Some server error
  */
@@ -139,7 +127,7 @@ router.get('/', user.getAllUsers)
 
 router.get('/:id', user.getUser);
 
-router.post('/createUser', user.createUser);
+router.post('/createUser', user.registerUser);
 
 // router.post('/delete', user.deleteUser);
 

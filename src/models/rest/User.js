@@ -1,22 +1,26 @@
+import { DataTypes } from 'sequelize'
 
-const admin = (sequelize, DataTypes) => {
-    const Admin = sequelize.define(
-        'admin',
+
+/**
+ * 
+ * @param {*} sequelize 
+ * @param { DataTypes } DataTypes 
+ * @returns 
+ */
+const user = (sequelize, DataTypes) => {
+    const User = sequelize.define(
+        'user',
         {
-            adminId: {
+            userId: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            admin_firstname: {
+            firstname: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            admin_lastname: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            admin_email: {
+            lastname: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
@@ -28,20 +32,25 @@ const admin = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            role: {
+            email: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
+            regnum: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
 
+            },
         },
         {
             timestamps: true,
             freezeTableName: true,
         }
     );
-    Admin.sync();
 
-    return Admin;
+    User.sync();
+
+    return User;
 };
 
-export default admin;
+export default user;
