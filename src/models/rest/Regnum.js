@@ -10,7 +10,8 @@ const regnum = (sequelize, DataTypes) => {
             },
             regnum: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                unique: true
             }
 
         },
