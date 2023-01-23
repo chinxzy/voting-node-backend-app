@@ -54,7 +54,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:4002",
+        url: "https://eee-voting-api.onrender.com",
 
       },
     ],
