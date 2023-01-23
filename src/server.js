@@ -23,7 +23,9 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/user', routes.user);
-app.use('/regnum', routes.regnum)
+app.use('/regnum', routes.regnum);
+app.use('/nomination', routes.nomination)
+app.use('/vote', routes.vote)
 
 
 // app.use((req, res) => {

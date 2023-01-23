@@ -1,8 +1,11 @@
 const db = require('../models');
 const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
+const bcrypt = require("bcryptjs");
 const User = db.rest.models.user
 const Regnum = db.rest.models.regnum
+const jwt = require("jsonwebtoken");
+
 //register users
 exports.registerUser = async (req, res) => {
     try {
@@ -30,48 +33,49 @@ exports.registerUser = async (req, res) => {
         const regnumExist = await Regnum.findOne({
             where: {
                 regnum: {
-                    [Op.eq]: regnum
+                    [Op.iLike]: regnum
                 }
             }
         })
 
-        if (userExist || !regnumExist) {
-            return res.status(419).send("Admin already exist with this credential. please login");
+        if (userExist) {
+            return res.status(418).send("Admin already exist with this credential. please login");
 
         }
 
         if (!regnumExist) {
             return res.status(419).send("No record of this regnum found");
 
+        } else {
+            //Encrypt user password
+
+            const encryptedPassword = await bcrypt.hash(password, 10);
+
+            //create user
+
+            const user = await User.create({
+                firstname,
+                lastname,
+                email,
+                password: encryptedPassword,
+                gender,
+                regnum
+            });
+            res.status(201).json({
+                status: 'success',
+                message: 'User Registered',
+                data: {
+                    user: {
+                        email: user.email,
+                        role: user.regnum
+                    }
+                }
+            })
+
+
+            return res.send(user)
         }
 
-        //Encrypt user password
-
-        const encryptedPassword = await bcrypt.hash(password, 10);
-
-        //create user
-
-        const user = await User.create({
-            firstname,
-            lastname,
-            email,
-            password: encryptedPassword,
-            gender,
-            regnum
-        });
-        res.status(201).json({
-            status: 'success',
-            message: 'User Registered',
-            data: {
-                user: {
-                    email: user.email,
-                    role: user.regnum
-                }
-            }
-        })
-
-
-        return res.send(admin)
     } catch (error) {
         console.log(error)
     }
@@ -144,6 +148,48 @@ exports.getUser = async (req, res) => {
     return res.send(user);
 };
 
+//user login
+exports.userLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        //validate input
+
+        if (!email || !password) {
+            res.status(400).send("All input is required")
+        }
+
+        //check is user exist
+        const user = await User.findOne({
+            where: {
+                email: {
+                    [Op.iLike]: email
+                }
+            }
+        });
+
+        if (!user) {
+            res.status(419).send("User with these credential doesn't exist")
+        } else if (await bcrypt.compare(password, user.password)) {
+            const tokenPayLoad = {
+                email: user.email,
+            };
+
+            const accessToken = jwt.sign(tokenPayLoad, process.env.TOKEN_KEY,
+                {
+                    expiresIn: "2h",
+                });
+            res.status(201).json({
+                accessToken
+            });
+        } else {
+            res.status(419).send({ "data": "Wrong password" })
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
 
 // exports.deleteUser = async (req, res) => {
 //   const { id } = req.body;

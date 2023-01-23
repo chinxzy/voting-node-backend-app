@@ -37,7 +37,7 @@ const user = (sequelize, DataTypes) => {
                 allowNull: false
             },
             regnum: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false,
 
             },
@@ -47,6 +47,7 @@ const user = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
+
 
     User.sync();
 

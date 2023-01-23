@@ -56,8 +56,21 @@ const router = Router();
  *           type: string
  *           description: The user's password
  *         regnum:
- *           type: integer
+ *           type: string
  *           description: The registration number of the user
+ * 
+ *     userLogin:
+ *       type: object
+ *       required:
+ *         - email
+ *         -  password
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: the email of the user
+ *         password:
+ *           type: string
+ *           description: The user's password
  *         
  */
 /**
@@ -121,6 +134,29 @@ const router = Router();
  *               $ref: '#/components/schemas/userPost'
  *       500:
  *         description: Some server error
+ * 
+ * /user/loginUser:
+ *   post:
+ *     summary: user log in
+ *     tags:
+ *       - user
+ *     requestBody:
+ *       required:
+ *         - email
+ *         - password
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/userLogin'
+ *     responses:
+ *       200:
+ *         description: User log in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/userLogin'
+ *       500:
+ *         description: Some server error
  */
 
 router.get('/', user.getAllUsers)
@@ -128,6 +164,8 @@ router.get('/', user.getAllUsers)
 router.get('/:id', user.getUser);
 
 router.post('/createUser', user.registerUser);
+
+router.post('/loginUser', user.userLogin)
 
 // router.post('/delete', user.deleteUser);
 
